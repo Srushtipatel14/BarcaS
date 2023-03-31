@@ -3,61 +3,69 @@ import { NavLink } from 'react-router-dom';
 import "./sign_up.css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { LoginContext } from '../context/ContextProvider';
+import { LoginContext } from "../context/ContextProvider";
 
 const SignIn = () => {
 
+   
     const [logdata, setdata] = useState({
         email: "",
         password: ""
     });
-    console.log(logdata)
 
+    // console.log(data);
     const { account, setAccount } = useContext(LoginContext);
+
     const adddata = (e) => {
         const { name, value } = e.target;
+        // console.log(name, value);
+
         setdata(() => {
             return {
                 ...logdata,
                 [name]: value
             }
         })
-    }
+    };
 
 
     const senddata = async (e) => {
-
         e.preventDefault();
+
         const { email, password } = logdata;
+        // console.log(email);
+        try {
+            const res = await fetch("/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email, password
+                })
+            });
 
-        const res = await fetch("/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                email, password
-            })
-        });
 
-        const data = await res.json();
-        console.log(data);
-        if (res.status === 400 || !data) {
-            console.log("invalid details");
-            toast.warn("invalid details", {
-                position: "top-center"
-            })
+            const data = await res.json();
+            // console.log(data);
+
+            if (res.status === 400 || !data) {
+                console.log("invalid details");
+                toast.warn("Invalid Details 👎!", {
+                    position: "top-center"
+                });
+            } else {
+                setAccount(data);
+                setdata({ ...logdata, email: "", password: "" })
+                toast.success("Successfully login 👍!", {
+                    position: "top-center"
+                });
+            }
+        } catch (error) {
+            console.log("login page ka error" + error.message);
         }
-        else {
-            console.log("valid data");
-            setAccount(data);
-            toast.success("valid user", {
-                position: "top-center"
-            })
-            setdata({ ...logdata, email: "", password: "" });
-        }
-
     }
+
 
     return (
         <section>
@@ -79,6 +87,7 @@ const SignIn = () => {
                         </div>
                         <button className='signin_btn' onClick={senddata}>Continue</button>
                     </form>
+                    <ToastContainer />
                 </div>
                 <div className="create_accountinfo">
                     <p>New To Amazon</p>
@@ -87,7 +96,7 @@ const SignIn = () => {
                 </div>
 
             </div>
-            <ToastContainer />
+          
         </section>
     )
 }

@@ -9,14 +9,16 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 const Cart=()=>{
 
+    const { account, setAccount } = useContext(LoginContext);
+
      const {id} =useParams("");
      //console.log(id);
 
      const history=useNavigate("");
 
-     const { account, setAccount } = useContext(LoginContext);
+     
      const [inddata,setIndddata]=useState("");
-     console.log(inddata);
+     //console.log(inddata);
      const getinddata=async ()=>{
 
 

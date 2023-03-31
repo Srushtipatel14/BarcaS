@@ -20,58 +20,66 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from "react-redux";
 
+
+
 const Navbar = () => {
 
   const { account, setAccount } = useContext(LoginContext);
+  //console.log(account);
+  
+  /*console.log(account.carts);
+  console.log(account.carts&&account.carts.length);
+  console.log(account.carts&&account.fname[0]);*/
+ 
   const history = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
+
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   const [text, setText] = useState("");
-  console.log(text)
+  //console.log(text)
   const [liopen, setLiopen] = useState(true);
 
   const { products } = useSelector(state => state.getProductsdata);
 
 
   const [dropen, setDropen] = useState(false);
-  console.log(account);
-  console.log(account);
-  const handleopen = () => {
-    setDropen(true);
-  }
+ 
+const getdetailvaliduser=async()=>{
+  const res=await fetch("/validuser",{
+    method:"GET",
+    headers:{
+      Accept:"application/json",
+      "Content-Type":"application/json"
+    },
+    credentials:"include"
+  });
+  const data=await res.json();
+ // console.log(data);
 
-  const handleclose = () => {
-    setDropen(false);
-  }
+ if(res.status !== 201)
+ {
+  console.log("error");
+ }
+ else{
+  console.log("data valid");
+  setAccount(data);
+ }
+};
 
-
-  const getdetailvaliduser = async () => {
-    const res = await fetch("/validuser", {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      credentials: "include"
-    });
-    const data = await res.json();
-    console.log('i m data',{data});
-    if (res.status !== 201) {
-      console.log("error");
-    }
-    else {
-      console.log("data valid");
-      setAccount(data);
-    }
-  };
+useEffect(()=>{
+  getdetailvaliduser();
+},[]);
 
 
   const logoutuser = async () => {
@@ -99,6 +107,15 @@ const Navbar = () => {
     }
   };
 
+
+  const handleopen = () => {
+    setDropen(true);
+  }
+
+  const handleclose = () => {
+    setDropen(false);
+  }
+
   const getText = (iteams) => {
 
     setText(iteams);
@@ -106,10 +123,6 @@ const Navbar = () => {
 
   }
 
-
-  useEffect(() => {
-    getdetailvaliduser();
-  }, []);
 
 
   return (
@@ -161,7 +174,7 @@ const Navbar = () => {
 
             <div className="cart_btn">
 
-              {
+             {
                 account ? <NavLink to="/buynow">
                   <Badge badgeContent={account.carts && account.carts.length} color="primary">
                     <ShoppingCartIcon id="icon" />
@@ -172,22 +185,31 @@ const Navbar = () => {
                   </Badge>
                 </NavLink>
               }
+
+              
+
+
               <ToastContainer />
               <p>Cart</p>
             </div>
-            {
+           
+           
+           {
               account ? <Avatar className="avtar2"
                 id="basic-button"
                 aria-controls={open ? 'basic-menu' : undefined}
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
                 onClick={handleClick}>
-                {account.fname[0].toUpperCase()}  </Avatar> : <Avatar className="avtar" id="basic-button"
+                
+                {account.fname  && account.fname[0].toUpperCase()}  </Avatar> : <Avatar className="avtar" id="basic-button"
                   aria-controls={open ? 'basic-menu' : undefined}
                   aria-haspopup="true"
                   aria-expanded={open ? 'true' : undefined}
                   onClick={handleClick} ></Avatar>
             }
+            
+            
 
             <Menu
               id="basic-menu"
@@ -200,7 +222,10 @@ const Navbar = () => {
             >
               <MenuItem onClick={handleClose}>My account</MenuItem>
               {
-                account ? <MenuItem onClick={handleClose} onClick={logoutuser} ><LogoutIcon style={{ fontSize: 16, marginRight: 3 }} />Logout</MenuItem> : ""
+                account ? <MenuItem onClick={()=>{
+                  handleClose();
+                  logoutuser();
+                }} ><LogoutIcon style={{ fontSize: 16, marginRight: 3 }} />Logout</MenuItem> : ""
               }
 
             </Menu>

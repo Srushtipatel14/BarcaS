@@ -73,7 +73,7 @@ router.post("/register", async (req, res) => {
 
 //login user api
 
-
+/*
 
 router.post("/login", async (req, res) => {
     // console.log(req.body);
@@ -109,7 +109,7 @@ router.post("/login", async (req, res) => {
                 res.status(400).json({ error: "invalid details" });
             }
             else {
-                res.status(201).json({ message: "password match" });
+                res.status(201).json({ message: "password match"});
 
             }
 
@@ -126,6 +126,51 @@ router.post("/login", async (req, res) => {
 
     }
 });
+*/
+
+router.post("/login", async (req, res) => {
+    // console.log(req.body);
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        res.status(400).json({ error: "fill the details" });
+    }
+
+    try {
+
+        const userlogin = await USER.findOne({ email: email });
+        console.log(userlogin);
+        if (userlogin) {
+            const isMatch = await bcrypt.compare(password, userlogin.password);
+            console.log(isMatch);
+
+
+
+            if (!isMatch) {
+                res.status(400).json({ error: "invalid crediential pass" });
+            } else {
+                
+                const token = await userlogin.generatAuthtoken();
+                console.log(token);
+
+                res.cookie("Amazonweb", token, {
+                    expire: new Date(Date.now() + 900000),
+                    httpOnly: true
+                });
+                res.status(201).json(userlogin);
+            }
+
+        } else {
+            res.status(400).json({ error: "user not exist" });
+        }
+
+    } catch (error) {
+        res.status(400).json({ error: "invalid crediential pass" });
+        console.log("error the bhai catch ma for login time" + error.message);
+    }
+});
+
+
 
 
 //adding the data into cart 
@@ -175,20 +220,19 @@ router.get("/cartdetails", authenticate, async (req, res) => {
 
 //get valid user
 
-
-router.get("/validuser", authenticate, async (req, res) => {
-
+router.get("/validuser",authenticate,async(req,res)=>{
     try {
 
-        const validuserone = await USER.findOne({ _id: req.userID });
+        const validuserone=await USER.findOne({_id:req.userID});
         res.status(201).json(validuserone);
-
+        
+        
     } catch (error) {
-        console.log("error" + error);
+
+        console.log("error :" + error)
+        
     }
-
 })
-
 //remove item from th cart
 
 router.delete("/remove/:id", authenticate, (req, res) => {

@@ -5,6 +5,7 @@ export const LoginContext = createContext(null);
 const Contextprovider = ({ children }) => {
 
     const [account, setAccount] = useState("");
+    
 
     return (
         <>

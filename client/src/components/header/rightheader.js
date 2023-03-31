@@ -13,10 +13,14 @@ const Rightheader = ({Logclose,userlog}) => {
     <>
       <div className="rightheader">
         <div className="right_nav">
+
+         
           {
-            account ? <Avatar className="avtar2">{account.fname[0].toUpperCase()}</Avatar> : <Avatar className="avtar"></Avatar>
+            account ? <Avatar className="avtar2">{account.fname  && account.fname[0].toUpperCase()}</Avatar> : <Avatar className="avtar"></Avatar>
           }
-          { account?<h3>Hello, {account.fname.toUpperCase()}</h3>:""}
+          { account?<h3>Hello, {account.fname}</h3>:""}
+
+
         </div>
 
         <div className="nav_btn" onClick={()=>Logclose()}>

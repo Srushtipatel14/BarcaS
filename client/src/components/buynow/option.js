@@ -21,19 +21,20 @@ const Option = ({deletedata,get}) => {
         });
 
         const data=await res.json();
-        console.log(data);
+        //console.log(data);
         if(res.json===400 ||!data){
           console.log('error');
         }
         else{
           console.log("user delete");
           setAccount(data);
+          get();
           toast.success("Item remove from cart",{
             position:"top-center"
           });
           
         }
-        get();
+   
       
     } catch (error) {
       console.log("error:"+error);
