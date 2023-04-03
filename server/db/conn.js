@@ -1,8 +1,12 @@
 const mongoose=require("mongoose");
+//const DB=process.env.DATABASE;
+;
 const DB=process.env.DATABASE;
-//const DB="mongodb+srv://srushtipatel:situpatel143@cluster0.ajhzhg1.mongodb.net/Amazonweb?retryWrites=true&w=majority";
+
+
 mongoose.connect(DB,{
 
+    //bufferCommands: false,
     useUnifiedTopology:true,
     useNewUrlParser:true
 
