@@ -27,7 +27,7 @@ const responsive = {
 const Slide=({title,products})=>{
     
     return(
-        <div className="products_section">
+        <div className="products_section" >
             <div className="products_deal">
                 <h3>{title}</h3>
                 <p className="view_btn">View All</p>

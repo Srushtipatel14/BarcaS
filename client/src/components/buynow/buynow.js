@@ -39,8 +39,8 @@ const Buynow = () => {
         <>
 
             {
-                cartdata.length ? <div className="buynow_section">
-                    <div className="buynow_container">
+                cartdata.length ? <div className="buynow_section" >
+                    <div className="buynow_container" >
                         <div className="left_buy">
                             <h1>Shopping Cart</h1>
                             <p>Select All items</p>
