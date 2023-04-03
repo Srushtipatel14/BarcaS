@@ -8,7 +8,7 @@ import Right from './right';
 const Buynow = () => {
 
     const [cartdata, setCartdata] = useState("");
-    //console.log(cartdata);
+//    console.log(data.carts);
     //console.log(cartdata.carts);
     const getdatabuy = async () => {
         const res = await fetch("/cartdetails", {
@@ -26,6 +26,7 @@ const Buynow = () => {
         else {
 
             setCartdata(data.carts);
+            
         }
     }
 
