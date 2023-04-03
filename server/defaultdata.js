@@ -14,6 +14,6 @@ const DefaultData=async()=>{
         
     }
 }
-setTimeout(DefaultData,30000);
+
 
 module.exports= DefaultData;
