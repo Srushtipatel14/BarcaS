@@ -1,12 +1,9 @@
 const mongoose=require("mongoose");
 //const DB=process.env.DATABASE;
-;
 const DB=process.env.DATABASE;
 
 
 mongoose.connect(DB,{
-
-    //bufferCommands: false,
     useUnifiedTopology:true,
     useNewUrlParser:true
 
